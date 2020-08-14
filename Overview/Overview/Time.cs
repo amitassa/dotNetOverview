@@ -92,5 +92,10 @@ namespace Overview
             }
             return new Time(hoursCombined, minCombined, secCombined, milisecCombined);
         }
+
+        public bool Equals(Time timeToEqual)
+        {
+            return _hours == timeToEqual._hours && _minutes == timeToEqual._minutes && _seconds == timeToEqual._seconds && _miliseconds == timeToEqual._miliseconds;
+        }
     }
 }
