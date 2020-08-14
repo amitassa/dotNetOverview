@@ -37,7 +37,7 @@ namespace Overview
                 else
                     milisecShow = "0" + _miliseconds;
             
-            Console.WriteLine($"{}");
+            Console.WriteLine($"Time is: {hourShow}.{minShow}.{secShow}.{milisecShow}");
         }
     }
 }
