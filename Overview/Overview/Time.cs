@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Overview
@@ -13,13 +14,27 @@ namespace Overview
 
         public Time (int hours, int min, int sec, int milisec)
         {
-            _hours = hours;
-            _miliseconds = milisec;
-            _minutes = min;
-            _seconds = sec;
+            if (TimeIntegrityCheck(hours, min, sec, milisec))
+            {
+                _hours = hours;
+                _miliseconds = milisec;
+                _minutes = min;
+                _seconds = sec;
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException("Time is not valid.");
+            }
+            
         }
 
-        public void ShowTime()
+        private bool TimeIntegrityCheck(int hours, int min, int sec, int milisec)
+        {
+            return (hours >= 0 && 23 >= hours) && (min >= 0 && 59 >= min) && (sec >= 0 && 59 >= sec) && (milisec >= 0 && 999 >= milisec);
+                
+        }
+
+        public string ShowTime()
         {
             string hourShow = _hours.ToString();
             string minShow = _minutes.ToString();
@@ -37,27 +52,27 @@ namespace Overview
                 else
                     milisecShow = "0" + _miliseconds;
             
-            Console.WriteLine($"Time is: {hourShow}:{minShow}:{secShow}.{milisecShow}");
+           return ($"Time is: {hourShow}:{minShow}:{secShow}.{milisecShow}");
         }
 
         public static Time operator+ (Time timeA, Time timeB)
         {
             int minCombined = timeA._minutes + timeB._minutes;
             int secCombined = timeA._seconds + timeB._seconds; ;
-            int milisecCombined = timeA._miliseconds + timeA._miliseconds;
+            int milisecCombined = timeA._miliseconds + timeB._miliseconds;
             int hoursCombined = timeA._hours + timeB._hours;
 
-            if (milisecCombined > 1000)
+            if (milisecCombined >= 1000)
             {
                 milisecCombined -= 1000;
                 secCombined++;
             }
-            if (secCombined > 60)
+            if (secCombined >= 60)
             {
                 secCombined -= 60;
                 minCombined++;
             }
-            if (minCombined > 60)
+            if (minCombined >= 60)
             {
                 minCombined -= 60;
                 hoursCombined++;
@@ -68,7 +83,7 @@ namespace Overview
         {
             int minCombined = timeA._minutes - timeB._minutes;
             int secCombined = timeA._seconds - timeB._seconds; ;
-            int milisecCombined = timeA._miliseconds - timeA._miliseconds;
+            int milisecCombined = timeA._miliseconds - timeB._miliseconds;
             int hoursCombined = timeA._hours - timeB._hours;
 
             if (milisecCombined < 0)
@@ -149,8 +164,9 @@ namespace Overview
             return _hours == timeToEqual._hours && _minutes == timeToEqual._minutes && _seconds == timeToEqual._seconds && _miliseconds == timeToEqual._miliseconds;
         }
 
-        public static Time[] SortTimes (params Time[] times)
+        public static void SortTimes (params Time[] times)
         {
+
             //Time[] sortedTiems = new Time[times.Length];
             for (int i = 0; i <= times.Length - 1; i++)
             {
@@ -164,7 +180,10 @@ namespace Overview
                     }
                 }
             }
-            return times;
+            if (times != null & times.Length != 0)
+                Console.WriteLine(string.Join(", ", times.Select(t => t.ShowTime()).ToArray()));
+            else
+                Console.WriteLine("No times to show");
         }
 
     }
