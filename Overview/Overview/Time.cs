@@ -93,9 +93,79 @@ namespace Overview
             return new Time(hoursCombined, minCombined, secCombined, milisecCombined);
         }
 
+        public static bool operator >(Time timeA, Time timeB)
+        {
+            if (timeA._hours < timeB._hours)
+                return false;
+            if (timeA._hours > timeB._hours)
+                return true;
+            // Now hours must be even
+            if (timeA._minutes < timeB._minutes)
+                return false;
+            if (timeA._minutes > timeB._minutes)
+                return true;
+            // Now minutes must be even
+            if (timeA._seconds < timeB._seconds)
+                return false;
+            if (timeA._seconds > timeB._seconds)
+                return true;
+            // Now seconds must be even
+            if (timeA._miliseconds < timeB._miliseconds)
+                return false;
+            if (timeA._miliseconds > timeB._miliseconds)
+                return true;
+            // Now miliseconds must be even
+            return false;
+
+        }
+        public static bool operator <(Time timeA, Time timeB)
+        {
+            if (timeA._hours > timeB._hours)
+                return false;
+            if (timeA._hours < timeB._hours)
+                return true;
+            // Now hours must be even
+            if (timeA._minutes > timeB._minutes)
+                return false;
+            if (timeA._minutes < timeB._minutes)
+                return true;
+            // Now minutes must be even
+            if (timeA._seconds > timeB._seconds)
+                return false;
+            if (timeA._seconds < timeB._seconds)
+                return true;
+            // Now seconds must be even
+            if (timeA._miliseconds > timeB._miliseconds)
+                return false;
+            if (timeA._miliseconds < timeB._miliseconds)
+                return true;
+            // Now miliseconds must be even
+            return false;
+
+        }
+
         public bool Equals(Time timeToEqual)
         {
             return _hours == timeToEqual._hours && _minutes == timeToEqual._minutes && _seconds == timeToEqual._seconds && _miliseconds == timeToEqual._miliseconds;
         }
+
+        public static Time[] SortTimes (params Time[] times)
+        {
+            //Time[] sortedTiems = new Time[times.Length];
+            for (int i = 0; i <= times.Length - 1; i++)
+            {
+                for (int j = i + 1; j < times.Length; j++)
+                {
+                    if (times[i] > times[j])
+                    {
+                        Time temp = times[i];
+                        times[i] = times[j];
+                        times[j] = temp;
+                    }
+                }
+            }
+            return times;
+        }
+
     }
 }
